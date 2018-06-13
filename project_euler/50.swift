@@ -19,10 +19,8 @@ func findPrimes(limit: Int) -> [Int] {
   for i in 2...limit {
     if !sieved[i] {
       primes.append(i)
-      var j = 2 * i
-      while j <= limit {
+      for j in stride(from: 2 * i, to: limit, by: i) {
         sieved[j] = true
-        j += i
       }
     }
   }
@@ -32,12 +30,13 @@ func findPrimes(limit: Int) -> [Int] {
 
 func findMaxSeriesLength(primes: [Int]) -> Int {
   var sum = 0
-  var index = 0
-  while sum < primes.last! {
+  for index in 0..<primes.count {
     sum += primes[index]
-    index += 1
+    if sum > primes.last! {
+      return index
+    }
   }
-  return index
+  return primes.count
 }
 
 func findPrimeWithLongestSequence(limit: Int) -> (prime: Int, length: Int) {
